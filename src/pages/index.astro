@@ -1,7 +1,37 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Card from "../components/Card.astro";
+
+// TODO: Implement full API request in correct location
+const response = await fetch("https://cms.theadhocracy.co.uk/api", {
+	method: "POST",
+	headers: {
+		"Content-Type": "application/graphql",
+		"Access-Control-Request-Headers": "*",
+		Authorization: `Bearer ${import.meta.env.CRAFT_API_KEY}`,
+	},
+	body: `
+			{ 
+				updatesEntries(type: "drank", limit: 10) {
+					... on updates_drank_Entry {
+						brewery {
+							title
+						}
+					}
+				}
+			}
+		`,
+	redirect: "follow",
+});
+
+const json = await response.json();
+const drinks = json?.data?.updatesEntries;
 ---
+
+<script define:vars={{ drinks }}>
+	// TODO: Remove this <script> element
+	console.log(drinks);
+</script>
 
 <Layout title="theAdhopracy">
 	<main>
@@ -61,6 +91,15 @@ import Card from "../components/Card.astro";
 				body="Come say hi to our amazing Discord community. ❤️"
 			/>
 		</ul>
+		{
+			drinks && (
+				<ul>
+					{drinks.map((drink: any) => (
+						<li>{drink?.brewery?.[0]?.title}</li>
+					))}
+				</ul>
+			)
+		}
 	</main>
 </Layout>
 
