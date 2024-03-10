@@ -30,17 +30,21 @@ const { blurb, brewery, date, image, name, rating, slug, tastingNotes } = Astro.
 
 <style>
     article {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 20rem;
         padding: 1rem;
         background-color: white;
         border-radius: 0 0 1rem 1rem;
     }
 
     h2 {
-        margin-block: 0.5rem;
+        margin-block: 1rem 0.25rem;
         padding-block: 0;
         line-height: 1;
 
-        span {
+        span:last-of-type {
             color: grey;
             font-size: 0.75em;
             white-space: nowrap;
@@ -54,7 +58,8 @@ const { blurb, brewery, date, image, name, rating, slug, tastingNotes } = Astro.
     ul {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.25rem 1rem;
+        flex: 1;
+        gap: 0.25rem 0.75rem;
         margin-block-start: 0;
 
         li { 
@@ -86,6 +91,7 @@ const { blurb, brewery, date, image, name, rating, slug, tastingNotes } = Astro.
         display: flex;
         flex-wrap: wrap;
         place-content: space-between;
+        justify-self: end;
         gap: 0.25rem 1rem;
         margin-block: 1rem -1rem;
         margin-inline: -1rem;
