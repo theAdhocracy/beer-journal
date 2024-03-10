@@ -79,6 +79,7 @@ const drinks = json?.data?.updatesEntries?.map((drink: any) => {
 	<main>
 		<h1>Ad Hops</h1>
 		<ul role="list" class="h-feed">
+			<li class="p-name">All drinks.</li>
 			{drinks.map((drink: any) => {
 				return <li><Drink {...drink} /></li>
 			})}
@@ -109,5 +110,9 @@ const drinks = json?.data?.updatesEntries?.map((drink: any) => {
 		display: flex;
 		gap: 2rem;
 		flex-wrap: wrap;
+	}
+
+	li:first-of-type {
+		display: none;
 	}
 </style>
