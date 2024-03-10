@@ -1,19 +1,18 @@
 :root {
-	--accent: 136, 58, 234;
-	--accent-light: 224, 204, 250;
-	--accent-dark: 49, 10, 101;
-	--accent-gradient: linear-gradient(
-		45deg,
-		rgb(var(--accent)),
-		rgb(var(--accent-light)) 30%,
-		white 60%
-	);
+	--accent: rebeccapurple;
 }
 
 html {
 	font-family: system-ui, sans-serif;
-	background: #13151a;
-	background-size: 224px;
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
+}
+
+img {
+	max-width: 100%;
 }
 
 code {
@@ -26,4 +25,12 @@ code {
 		Bitstream Vera Sans Mono,
 		Courier New,
 		monospace;
+}
+
+ul[role="list"], ol[role="list"], dl[role="list"] {
+	padding: 0;
+
+	li {
+		list-style: none;
+	}
 }
