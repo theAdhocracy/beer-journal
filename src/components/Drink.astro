@@ -18,11 +18,14 @@ export interface DrinkProps {
 const { blurb, brewery, date, image, name, rating, slug, tastingNotes } = Astro.props;
 ---
 
-<article>
+<article class="h-entry">
     <img src={image.src} alt={image.src} />
     <h2>{name}{brewery && <> <span>{brewery}</span></>}</h2>
     <ul role="list">{tastingNotes.map((note: string) => <li><span>#</span>{note}</li>)}</ul>
-    <footer><time>{date}</time><p>{"⭐️".repeat(rating)}</p></footer>
+    <footer>
+        <time datetime={new Date(date).toISOString()}>{date}</time>
+        <p>{"⭐️".repeat(rating)}</p>
+    </footer>
 </article>
 
 <style>
@@ -48,24 +51,6 @@ const { blurb, brewery, date, image, name, rating, slug, tastingNotes } = Astro.
         max-width: 100%;
     }
 
-    p {
-        margin: 0;
-        text-align: end;
-        place-self: end;
-    }
-
-    footer {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.25rem 1rem;
-        margin-block: 1rem -1rem;
-        margin-inline: -1rem;
-        padding: 0.5rem 1rem 0.75rem;
-        /* background-color: #e6e6e6; */
-        border-top: 2px solid lightgray;
-        border-radius: 0 0 1rem 1rem;
-    }
-
     ul {
         display: flex;
         flex-wrap: wrap;
@@ -84,4 +69,31 @@ const { blurb, brewery, date, image, name, rating, slug, tastingNotes } = Astro.
             }
         }
     }
+
+    p {
+        margin: 0;
+        text-align: end;
+        place-self: end;
+    }
+
+    time {
+        margin-inline-start: 0.1em;
+        font-size: 0.8rem;
+        place-self: center;
+    }
+
+    footer {
+        display: flex;
+        flex-wrap: wrap;
+        place-content: space-between;
+        gap: 0.25rem 1rem;
+        margin-block: 1rem -1rem;
+        margin-inline: -1rem;
+        padding: 0.5rem 1rem 0.75rem;
+        /* background-color: #e6e6e6; */
+        border-top: 2px solid lightgray;
+        border-radius: 0 0 1rem 1rem;
+    }
+
+    
 </style>
