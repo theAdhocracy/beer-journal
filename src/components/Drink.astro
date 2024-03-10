@@ -20,11 +20,11 @@ const { blurb, brewery, date, image, name, rating, slug, tastingNotes } = Astro.
 
 <article class="h-entry">
     <img src={image.src} alt={image.src} />
-    <h2>{name}{brewery && <> <span>{brewery}</span></>}</h2>
+    <h2><span class="p-name">{name}</span>{brewery && <> <span>{brewery}</span></>}</h2>
     <ul role="list">{tastingNotes.map((note: string) => <li><span>#</span>{note}</li>)}</ul>
     <footer>
-        <time datetime={new Date(date).toISOString()}>{date}</time>
-        <p>{"⭐️".repeat(rating)}</p>
+        <time datetime={new Date(date).toISOString()} class="dt-published">{date}</time>
+        <data value={rating} class="p-rating">{"⭐️".repeat(rating)}</data>
     </footer>
 </article>
 
