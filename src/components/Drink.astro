@@ -1,107 +1,152 @@
 ---
 export interface Image {
-    src: string;
-    alt?: string;
+	src: string;
+	alt?: string;
 }
 
 export interface DrinkProps {
-    blurb?: string;
-    brewery?: string;
-    date: Date;
-    image?: Image;
-    name: string;
-    rating: number;
-    slug: string;
-    tastingNotes: string[];
+	blurb?: string;
+	brewery?: string;
+	date: Date;
+	image?: Image;
+	location?: string;
+	name: string;
+	rating: number;
+	slug: string;
+	tastingNotes: string[];
+	type: string;
 }
 
-const { blurb, brewery, date, image, name, rating, slug, tastingNotes } = Astro.props;
+const {
+	blurb,
+	brewery,
+	date,
+	image,
+	location,
+	name,
+	rating,
+	slug,
+	tastingNotes,
+	type,
+} = Astro.props;
 ---
 
 <article class="h-entry">
-    <img src={image.src} alt={image.src} />
-    <h2><span class="p-name">{name}</span>{brewery && <> <span>{brewery}</span></>}</h2>
-    <ul role="list">{tastingNotes.map((note: string) => <li><span>#</span>{note}</li>)}</ul>
-    <footer>
-        <time datetime={new Date(date).toISOString()} class="dt-published">{date}</time>
-        <data value={rating} class="p-rating">{"⭐️".repeat(rating)}</data>
-    </footer>
+	<img src={image.src} alt={image.src} />
+	<h2>
+		<span class="p-name">{name}</span>{
+			brewery && (
+				<>
+					{" "}
+					<span>{brewery}</span>
+				</>
+			)
+		}
+	</h2>
+	<ul role="list">
+		{
+			tastingNotes.map((note: string) => (
+				<li>
+					<span>#</span>
+					{note}
+				</li>
+			))
+		}
+		{
+			type && (
+				<li>
+					<span>#</span> {type}
+				</li>
+			)
+		}
+	</ul>
+	<footer>
+		<time datetime={new Date(date).toISOString()} class="dt-published"
+			>{date}</time
+		>
+		{location && <address>{location}</address>}
+		<data value={rating} class="p-rating">{rating.toString()} / 5</data>
+	</footer>
 </article>
 
 <style>
-    article {
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-        place-self: start;
-        width: 100%;
-        max-width: 20rem;
-        padding: 1rem;
-        background-color: white;
-        border-radius: 0 0 1rem 1rem;
-    }
+	article {
+		display: flex;
+		flex-direction: column;
+		flex-grow: 1;
+		place-self: start;
+		width: 100%;
+		max-width: 20rem;
+		padding: 1rem;
+		background-color: white;
+		border-radius: 0 0 1rem 1rem;
+	}
 
-    h2 {
-        margin-block: 1rem 0.25rem;
-        padding-block: 0;
-        line-height: 1;
+	h2 {
+		margin-block: 1rem 0.25rem;
+		padding-block: 0;
+		line-height: 1;
 
-        span:last-of-type {
-            color: grey;
-            font-size: 0.75em;
-            white-space: nowrap;
-        }
-    }
+		span:last-of-type {
+			color: grey;
+			font-size: 0.75em;
+			white-space: nowrap;
+		}
+	}
 
-    img {
-        max-width: 100%;
-    }
+	img {
+		max-width: 100%;
+	}
 
-    ul {
-        display: flex;
-        flex-wrap: wrap;
-        flex: 1;
-        gap: 0rem 0.75rem;
-        margin-block-start: 0;
+	ul {
+		display: flex;
+		flex-wrap: wrap;
+		flex: 1;
+		gap: 0rem 0.75rem;
+		margin-block-start: 0;
 
-        li { 
-            font-size: 1rem;
-            white-space: nowrap;
+		li {
+			font-size: 1rem;
+			white-space: nowrap;
 
-            span {
-                margin-inline-end: 0.1rem;
-                color: var(--accent);
-                font-weight: bold;
-                font-size: 0.8em;
-            }
-        }
-    }
+			span {
+				margin-inline-end: 0.1rem;
+				color: var(--accent);
+				font-weight: bold;
+				font-size: 0.8em;
+			}
+		}
+	}
 
-    p {
-        margin: 0;
-        text-align: end;
-        place-self: end;
-    }
+	p {
+		margin: 0;
+		text-align: end;
+		place-self: end;
+	}
 
-    time {
-        margin-inline-start: 0.1em;
-        font-size: 0.8rem;
-        place-self: center;
-    }
+	time {
+		margin-inline-start: 0.1em;
+		font-size: 0.8rem;
+		place-self: center;
+	}
 
-    footer {
-        display: flex;
-        flex-wrap: wrap;
-        place-content: space-between;
-        justify-self: end;
-        gap: 0.25rem 1rem;
-        margin-block: 1rem -1rem;
-        margin-inline: -1rem;
-        padding: 0.5rem 1rem 0.75rem;
-        /* background-color: #e6e6e6; */
-        border-top: 2px solid lightgray;
-        border-radius: 0 0 1rem 1rem;
-    }
+	address {
+		font-size: 0.8rem;
+		font-style: normal;
+		place-self: center;
+	}
 
-    
+	footer {
+		display: flex;
+		flex-wrap: wrap;
+		place-content: space-between;
+		justify-self: end;
+		gap: 0.25rem 1rem;
+		margin-block: 1rem -1rem;
+		margin-inline: -1rem;
+		padding: 0.5rem 1rem 0.75rem;
+		/* background-color: #e6e6e6; */
+		border-top: 2px solid lightgray;
+		border-radius: 0 0 1rem 1rem;
+	}
 </style>
