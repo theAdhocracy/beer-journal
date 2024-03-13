@@ -38,7 +38,15 @@ const response = await fetch("https://cms.theadhocracy.co.uk/api", {
 							title
 						},
 						itemName,
-						dateCreated
+						dateCreated,
+						location {
+							... on location_Category {
+								title 
+								location {
+									title
+								}
+							}
+						}
 					}
 				}
 			}
@@ -48,41 +56,93 @@ const response = await fetch("https://cms.theadhocracy.co.uk/api", {
 
 const json = await response.json();
 const drinks = json?.data?.updatesEntries?.map((drink: any) => {
+	const flatLocation = [
+		drink.location?.[0]?.title,
+		drink.location?.[0]?.location?.[0]?.title,
+	];
+
+	const finalCategory = drink.drink?.at(-1)?.title;
 	return {
 		blurb: drink.pageCopy,
 		brewery: drink.brewery?.[0]?.title,
 		date: new Date(drink.dateCreated).toLocaleDateString("en-GB", {
 			year: "2-digit",
 			month: "short",
-			day: "2-digit"
+			day: "2-digit",
 		}),
 		image: {
 			alt: drink.assetsAdhoc?.[0]?.alt,
 			src: drink.assetsAdhoc?.[0]?.url,
 		},
+		location: flatLocation
+			.filter(Boolean)
+			.join(", ")
+			.replace("0 - Home", "Home"),
 		name: drink.itemName,
 		rating: drink.rating,
 		slug: drink.slug,
 		tastingNotes: drink.tastingNotes.map((note: any) => {
-			return note.title
-		})
-	}
+			return note.title;
+		}),
+		type: finalCategory || "beer",
+	};
 });
+
+// Capture Data from Search Form
+const search = { query: "" };
+if (Astro.request.method === "POST") {
+	try {
+		const data = await Astro.request.formData();
+		const query = data.get("query");
+		if (typeof query === "string" && query.length > 0) {
+			search.query += query;
+		} else {
+			search.query = "";
+		}
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+// Filter Drinks
+let filtered = drinks;
+if (search.query.length > 0) {
+	filtered = drinks.filter((drink: any) => {
+		const name = drink.name.toLowerCase();
+		const brewery = drink.brewery.toLowerCase();
+		const query = search.query.toLowerCase();
+
+		return name.includes(query) || brewery.includes(query);
+	});
+}
 ---
 
-<script define:vars={{ drinks }}>
+<script define:vars={{ filtered }}>
 	// TODO: Remove this <script> element
-	console.log(drinks);
+	console.log(filtered);
 </script>
 
 <Layout title="theAdhopracy">
 	<main>
 		<h1>Ad Hops</h1>
+		<search role="search">
+			<form id="search" method="POST">
+				<input type="text" name="query" />
+				<button type="submit">Search</button>
+			</form>
+		</search>
+		{search.query && <p>current search: {search.query}</p>}
 		<ul role="list" class="h-feed">
 			<li class="p-name">All drinks.</li>
-			{drinks.map((drink: any) => {
-				return <li><Drink {...drink} /></li>
-			})}
+			{
+				filtered.map((drink: any) => {
+					return (
+						<li>
+							<Drink {...drink} />
+						</li>
+					);
+				})
+			}
 		</ul>
 	</main>
 </Layout>
@@ -102,6 +162,11 @@ const drinks = json?.data?.updatesEntries?.map((drink: any) => {
 		line-height: 1;
 		text-align: center;
 		margin-bottom: 1em;
+	}
+
+	search {
+		max-width: fit-content;
+		margin-inline: auto;
 	}
 
 	ul {
