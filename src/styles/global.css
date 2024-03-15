@@ -6,9 +6,16 @@ html {
 	font-family: system-ui, sans-serif;
 }
 
-html, body {
+html,
+body {
 	margin: 0;
 	padding: 0;
+	height: 100%;
+	min-height: 100dvh;
+}
+
+main {
+	height: 100%;
 }
 
 img {
@@ -27,7 +34,9 @@ code {
 		monospace;
 }
 
-ul[role="list"], ol[role="list"], dl[role="list"] {
+ul[role="list"],
+ol[role="list"],
+dl[role="list"] {
 	padding: 0;
 
 	li {

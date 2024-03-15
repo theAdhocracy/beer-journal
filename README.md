@@ -4,20 +4,24 @@
 
 <p align="center">Mainly beer, but with the occasional special guest on offer.</p>
 
-<p align="center">--- --- --- --- --- --- ---</p>
-
 ## To Do
 
 - [x] Initial commit
-- [ ] Configure codebase
-- [ ] Integrate API
-- [ ] List out design requirements
+- [x] Configure codebase
+- [x] Integrate API
+- [ ] Mock up design
+- [x] Add basic search
+- [ ] Extend search functionality
+- [ ] Stream pagination
+- [ ] Brewery pages
+- [ ] Category pages
+- [ ] RSS/Atom feed
+- [ ] Category/taxonomy page
 
 ## Future Ideas
 
 - [ ] Import records from Instagram
 - [ ] Import records from Untappd
-
-<p align="center">--- --- --- --- --- --- ---</p>
+- [ ] Stats pages
 
 <p align="center">Built with <a href="https://docs.astro.build/">🚀</a> and 🍺</p>
