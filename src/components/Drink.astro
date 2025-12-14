@@ -5,7 +5,7 @@ const venue = location.replace('0 - ', '')
 ---
 
 <article class="h-entry">
-	<img src={image.src} alt={image.alt} />
+	<img src={image.src} alt={image.alt} loading="lazy" />
 	<h2>
 		<span class="p-name">{title}</span>{
 			brewery && (
