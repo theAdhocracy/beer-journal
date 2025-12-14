@@ -34,12 +34,25 @@ code {
 		monospace;
 }
 
-ul[role="list"],
-ol[role="list"],
-dl[role="list"] {
+ul[role='list'],
+ol[role='list'],
+dl[role='list'] {
 	padding: 0;
 
 	li {
 		list-style: none;
 	}
+}
+
+/* Global class for elements that should only be accessible by screenreaders */
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
 }
