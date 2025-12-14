@@ -20,7 +20,7 @@ const venue = location.replace('0 - ', '')
 		{
 			tastingNotes.map((note: string) => (
 				<li>
-					<span>#</span>
+					<span aria-hidden>#</span>
 					{note}
 				</li>
 			))
@@ -28,7 +28,7 @@ const venue = location.replace('0 - ', '')
 		{
 			type && (
 				<li>
-					<span>#</span> {type}
+					<span aria-hidden>#</span> {type}
 				</li>
 			)
 		}

@@ -1,0 +1,121 @@
+---
+const { total } = Astro.props
+---
+
+<search role="search">
+	<form>
+		<label for="search" aria-describedby="search-desc">Search Drinks</label>
+		<span class="sr-only" id="search-desc">Filters as you type</span>
+		<input type="search" id="search" name="search" />
+	</form>
+	<p class="sr-only" role="status">{total} results</p>
+</search>
+
+<script>
+	// Function: filter album grid based on search term
+	export function filterAlbumGrid(search: string) {
+		const drinksList = document.querySelector('.h-feed')
+		const drinks = drinksList?.querySelectorAll('article')
+		if (!drinks || !drinksList) return
+
+		// Set aria-busy attribute
+		drinksList.setAttribute('aria-busy', 'true')
+
+		// Loop through albums and hide/show based on search term
+		;[...drinks].forEach((drink: any) => {
+			const drinkName = drink.querySelector('.p-name')?.textContent?.toLowerCase() || ''
+			const brewery = drink.querySelector('.p-name + span')?.textContent?.toLowerCase() || ''
+			const category =
+				drink.querySelector('ul li:last-of-type')?.textContent?.toLowerCase().replace('# ') || ''
+			const searchTerm = search.toLowerCase()
+
+			if (
+				drinkName.includes(searchTerm) ||
+				brewery.includes(searchTerm) ||
+				category.includes(searchTerm)
+			) {
+				drink.style.display = 'block'
+			} else {
+				drink.style.display = 'none'
+			}
+		})
+
+		// Remove aria-busy attribute
+		drinksList.removeAttribute('aria-busy')
+	}
+
+	// Function: update live region with number of results
+	export function updateLiveRegion() {
+		const drinks = document.querySelector('.h-feed')
+		const visibleDrinks =
+			drinks?.querySelectorAll('article:not([style*="display: none"])').length || 0
+
+		if (searchAlert) {
+			searchAlert.textContent = `${visibleDrinks} drinks found`
+		}
+	}
+
+	// Event: trigger filtering on search
+	const searchBox = document.querySelector('search')
+	const searchAlert = searchBox?.querySelector('p[role="status"]')
+	const searchInput = searchBox?.querySelector('#search') as HTMLInputElement | null
+
+	searchInput?.addEventListener('input', (event) => {
+		const target = event.target as HTMLInputElement
+		filterAlbumGrid(target.value)
+		updateLiveRegion()
+	})
+
+	// Event: on page load, check URL for search parameter
+	window.addEventListener('DOMContentLoaded', () => {
+		const params = new URLSearchParams(window.location.search)
+		const searchParam = params.get('search')
+		if (searchParam && searchInput) {
+			searchInput.value = searchParam
+			filterAlbumGrid(searchParam)
+			updateLiveRegion()
+		}
+	})
+</script>
+
+<style>
+	search {
+		form {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.5rem;
+			place-content: center;
+			place-items: center;
+			text-align: center;
+		}
+
+		label {
+			flex-basis: 100%;
+			font-size: 0.825rem;
+			color: #757575;
+		}
+
+		input {
+			max-width: 100%;
+			padding: 0.25rem 0.5rem;
+			border: 1px solid grey;
+		}
+
+		button {
+			aspect-ratio: 1;
+			padding: 0.15rem;
+			background: none;
+			border: 1px solid grey;
+			line-height: 1;
+		}
+
+		:is(input, button):focus {
+			outline: 3px solid transparent;
+			border-style: solid;
+		}
+
+		button {
+			cursor: pointer;
+		}
+	}
+</style>
