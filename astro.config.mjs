@@ -16,6 +16,6 @@ export default defineConfig({
 	build: {
 		format: 'file'
 	},
-	output: 'static',
+	output: 'server',
 	trailingSlash: 'never'
 })
