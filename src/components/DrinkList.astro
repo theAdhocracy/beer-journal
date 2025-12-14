@@ -1,0 +1,33 @@
+---
+import Drink from '@/components/Drink.astro'
+import { fetchCraftAPI } from '@/utils/CraftAPI'
+let { drinks, skip = 0 } = Astro.props
+
+if (!drinks || drinks.length === 0) {
+	drinks = await fetchCraftAPI(`/updates/drinks?s=${skip}`)
+}
+---
+
+{
+	drinks.map((drink: any) => {
+		return (
+			<li>
+				<Drink {...drink} />
+			</li>
+		)
+	})
+}
+
+<style>
+	ul {
+		display: flex;
+		gap: 2rem;
+		flex-wrap: wrap;
+		max-width: 75rem;
+		margin-inline: auto;
+		align-content: start;
+		align-items: start;
+		justify-content: center;
+		justify-items: center;
+	}
+</style>
