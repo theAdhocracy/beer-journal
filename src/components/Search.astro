@@ -77,6 +77,29 @@ const { total } = Astro.props
 			updateLiveRegion()
 		}
 	})
+
+	// Event: on server island streaming complete, check URL for search parameter
+	const loadingMessage = document.querySelector('#loading')
+	if (loadingMessage) {
+		const observer = new MutationObserver((mutations) => {
+			mutations.forEach((mutation) => {
+				mutation.removedNodes.forEach((node) => {
+					if (node === loadingMessage) {
+						const params = new URLSearchParams(window.location.search)
+						const searchParam = params.get('search')
+						if (searchParam && searchInput) {
+							searchInput.value = searchParam
+							filterAlbumGrid(searchParam)
+							updateLiveRegion()
+						}
+					}
+				})
+			})
+		})
+		if (loadingMessage.parentNode) {
+			observer.observe(loadingMessage.parentNode, { childList: true })
+		}
+	}
 </script>
 
 <style>
