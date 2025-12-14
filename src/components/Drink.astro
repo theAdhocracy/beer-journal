@@ -1,45 +1,18 @@
 ---
-export interface Image {
-	src: string;
-	alt?: string;
-}
+const { brewery, date, image, location, title, rating, tastingNotes, type } = Astro.props
 
-export interface DrinkProps {
-	blurb?: string;
-	brewery?: string;
-	date: Date;
-	image?: Image;
-	location?: string;
-	name: string;
-	rating: number;
-	slug: string;
-	tastingNotes: string[];
-	type: string;
-}
-
-const {
-	blurb,
-	brewery,
-	date,
-	image,
-	location,
-	name,
-	rating,
-	slug,
-	tastingNotes,
-	type,
-} = Astro.props;
+const venue = location.replace('0 - ', '')
 ---
 
 <article class="h-entry">
-	<img src={image.src} alt={image.src} />
+	<img src={image.src} alt={image.alt} />
 	<h2>
-		<span class="p-name">{name}</span>{
+		<span class="p-name">{title}</span>{
 			brewery && (
-				<>
-					{" "}
+				<span>
+					{' '}
 					<span>{brewery}</span>
-				</>
+				</span>
 			)
 		}
 	</h2>
@@ -61,10 +34,14 @@ const {
 		}
 	</ul>
 	<footer>
-		<time datetime={new Date(date).toISOString()} class="dt-published"
-			>{date}</time
-		>
-		{location && <address>{location}</address>}
+		{
+			date && (
+				<time datetime={date.datetime} class="dt-published">
+					{date.date}
+				</time>
+			)
+		}
+		{venue && <p class="address">{venue}</p>}
 		<data value={rating} class="p-rating">{rating.toString()} / 5</data>
 	</footer>
 </article>
@@ -83,6 +60,8 @@ const {
 	}
 
 	h2 {
+		display: flex;
+		flex-direction: column;
 		margin-block: 1rem 0.25rem;
 		padding-block: 0;
 		line-height: 1;
@@ -130,7 +109,7 @@ const {
 		place-self: center;
 	}
 
-	address {
+	.address {
 		font-size: 0.8rem;
 		font-style: normal;
 		place-self: center;
