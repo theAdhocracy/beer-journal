@@ -24,4 +24,8 @@
 - [ ] Import records from Untappd
 - [ ] Stats pages
 
+## Local Development
+
+- To connect to a local version of the Craft API, use the command `$env:NODE_TLS_REJECT_UNAUTHORIZED=0; npm run dev` to start the Astro dev server.
+
 <p align="center">Built with <a href="https://docs.astro.build/">🚀</a> and 🍺</p>
